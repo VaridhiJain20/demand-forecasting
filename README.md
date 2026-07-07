@@ -387,9 +387,3 @@ Future Work:
 - Persist trained models instead of retraining on every page load or selection change.
 - Extend inventory optimization to account for multiple suppliers or variable lead times instead of a single fixed lead time.
 
----
-
-## Author
-
-Name: Varidhi Jain
-GitHub: YOUR GITHUB URL
