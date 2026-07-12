@@ -38,8 +38,13 @@ def detect_anomalies(df: pd.DataFrame, store: int, item: int, contamination: flo
         subset["expected_sales"] = subset["sales"]
         return subset[["date", "sales", "is_anomaly", "severity", "deviation_pct", "expected_sales"]]
 
-    subset["rolling_mean"] = subset["sales"].rolling(window=7, min_periods=1, center=True).mean()
-    subset["rolling_std"] = subset["sales"].rolling(window=7, min_periods=1, center=True).std().fillna(0)
+    subset["day_of_week"] = pd.to_datetime(subset["date"]).dt.dayofweek
+    subset["rolling_mean"] = subset.groupby("day_of_week")["sales"].transform(
+        lambda s: s.rolling(window=4, min_periods=1).mean()
+    )
+    subset["rolling_std"] = subset.groupby("day_of_week")["sales"].transform(
+        lambda s: s.rolling(window=4, min_periods=1).std().fillna(0)
+    )
 
     features = subset[["sales", "rolling_mean", "rolling_std"]].fillna(0)
 

@@ -1,6 +1,4 @@
 
-
-
 # Retail Demand Forecasting and Inventory Optimization System
 
 A Streamlit application for retail demand forecasting and inventory planning. It takes historical store-item sales data and produces exploratory analysis, multi-model demand forecasts, anomaly detection, and inventory policy calculations (safety stock, reorder point, EOQ). The app accepts a CSV upload directly in the browser , and works with the Kaggle Store Item Demand Forecasting Challenge dataset or any sales data with date, store, item, and sales fields. Output is an interactive five-page dashboard rather than a static report.
@@ -190,4 +188,7 @@ Future Work:
 - Add a batch forecasting mode that runs all models across every store-item combination and exports a consolidated report.
 - Persist trained models instead of retraining on every page load or selection change.
 - Extend inventory optimization to account for multiple suppliers or variable lead times instead of a single fixed lead time.
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6ac287 (anomaly logic)
