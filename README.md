@@ -151,7 +151,7 @@ Once loaded, `validate_raw_data` runs data-quality checks (missing values, dupli
 
 For forecasting, a single store-item series is extracted with `make_continuous_daily_series`, which fills any missing calendar days with zero sales so the series is continuous. `feature_engineer.create_features` builds lag (1, 7, 14, 30 days), rolling mean/std/max/min, and exponentially weighted features for the XGBoost model. XGBoost is evaluated with `TimeSeriesSplit` cross-validation and then forecasts recursively, feeding each day's prediction back in as input for the next. Prophet is fit directly on the daily series with weekly and yearly seasonality, evaluated on a holdout tail, and falls back to the moving-average baseline if Prophet isn't installed or fails to fit.
 
-Anomaly detection also runs on the continuous daily series: `anomaly_detector.py` computes a rolling 7-day mean and standard deviation, feeds sales plus these rolling statistics into an Isolation Forest, and classifies flagged points as HIGH, MEDIUM, or LOW severity based on percentage deviation from the rolling mean.
+Anomaly detection also runs on the continuous daily series: anomaly_detector.py groups the series by day of week and computes a trailing rolling mean and standard deviation within each weekday group (last 4 occurrences of that weekday), so a store's typical weekend uplift isn't flagged as anomalous. These weekday-relative rolling statistics, together with raw sales, are fed into an Isolation Forest, and flagged points are classified as HIGH, MEDIUM, or LOW severity based on percentage deviation from the expected (same-weekday) sales level.
 
 Inventory calculations in `inventory_optimizer.py` use the same historical series: safety stock from the standard deviation of daily sales scaled by a service-level z-score and the square root of lead time, reorder point as mean daily demand times lead time plus safety stock, and EOQ from the standard square-root formula using ordering and holding costs.
 
@@ -188,7 +188,3 @@ Future Work:
 - Add a batch forecasting mode that runs all models across every store-item combination and exports a consolidated report.
 - Persist trained models instead of retraining on every page load or selection change.
 - Extend inventory optimization to account for multiple suppliers or variable lead times instead of a single fixed lead time.
-<<<<<<< HEAD
-
-=======
->>>>>>> a6ac287 (anomaly logic)
